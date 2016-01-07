@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-class Scorerer:
+class Scoreler:
     def __init__(self,categorized_relatedsite):
         self._relatedsite = categorized_relatedsite
 
     def analyze(self):
         raise Exception('abstract method.')
 
-class StdScorerer(Scorerer):
+class StdScoreler(Scoreler):
     #return a scored category.analyze which category the relatedsites belong to.
     def analyze(self):
         stats = {}
@@ -50,7 +50,7 @@ class CategoryValidator:
         self._relatedsites = []       
         self._catgorized_sites = {}
 
-    def do(self,scorerer,categorysetter):
+    def do(self,scoreler,categorysetter):
         try:
             #overview
             #use webdb api directory or a file analyzed by webdb api.
@@ -67,8 +67,8 @@ class CategoryValidator:
             self._categorized_sites = categorysetter.do()
  
             #4.analyze categorized relatedsites.
-            scorerer = StdScorerer(self._categorized_sites)
-            return scorerer.analyze()
+            _category = scoreler.analyze()
+            return _category
 
         except:
             raise Exception
