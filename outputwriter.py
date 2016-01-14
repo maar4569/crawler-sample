@@ -17,7 +17,7 @@ class Url2CsvWriter(OutputWriter):
                 fo.writerow([srcurl,k,v])
             return 0
         except Exception as e:
-            raise Exception('exception in output()' + e.message)
+            raise Exception(e)
 
 class Url2JsonWriter(OutputWriter):
     def output(self,filename,urls,srcurl):
@@ -30,6 +30,6 @@ class Url2JsonWriter(OutputWriter):
             json.dump(outputlist,open(filename,'w'),ensure_ascii=False)
             return 0
         except Exception as e:
-            raise Exception('exception in output()' + e.message)
+            raise Exception(e)
 
 

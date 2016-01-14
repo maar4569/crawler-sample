@@ -28,4 +28,4 @@ class StdScoreler(Scoreler):
             majorScore    = max(stats.items(), key=lambda x:x[1])[1]
             return majorCategory
         except Exception as e:
-            raise Exception('exception in do()'+ e.message)
+            raise Exception(e)
