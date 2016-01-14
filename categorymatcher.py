@@ -1,47 +1,37 @@
 # -*- coding: utf-8 -*-
-class Scoreler:
-    def __init__(self,categorized_relatedsite):
-        self._relatedsite = categorized_relatedsite
+class CategorySetter:
+    def __init__(self,exepath):
+        self._exepath =exepath
+        self._relatedurls = []
+        self._categorized_url = {}
 
-    def analyze(self):
-        raise Exception('abstract method.')
-
-class StdScoreler(Scoreler):
-    #return a scored category.analyze which category the relatedsites belong to.
-    def analyze(self):
-        stats = {}
-        try:
-            sites_len = len(self._relatedsite)
-            for url,cat in self._relatedsite.items():
-                if not self._relatedsite.has_key(cat):
-                    stats[cat] = 1
-                else:
-                    stats[cat] = stats[cat]+1
-            
-            return u'Weather'
-        except:
-            raise Exception('exception in do()')
-
-
-class CategorySetter(self):
-    def _init__(self,exepath):
-        self_.exepath =exepath
     def do(self):
         raise Exception('abstract method.')
 
-class CategorySetterExe(CategorySetter)
-    def do(self):
-        try:
-        #call exe
-        except:
-            raise Exception('exception in do()')
+    def setData(relatedurls):
+        self._relatedurls = relatedurls
+        
+    def items(self):
+        return self._categorized_url
 
-class CategorySetterAPI(CategorySetter)
+class CategorySetterExe(CategorySetter):
     def do(self):
         try:
+        #call exe (write file)
+        #subprocess category.exe
+        #open file defined categorized urls
+        #sample http://domain.com,"news"
+            print "success"      
+        except Exception as e:
+            raise Exception(e.args)
+
+class CategorySetterAPI(CategorySetter):
+    def do(self):
+        try:
+            print "success"      
         #call api
-        except:
-            raise Exception('exception in do()')
+        except Exception as e:
+            raise Exception(e.args)
 
 #given non-categrized url to this method and return category
 class CategoryValidator:
@@ -50,23 +40,27 @@ class CategoryValidator:
         self._relatedsites = []       
         self._catgorized_sites = {}
 
-    def do(self,scoreler,categorysetter):
+    def do(self,scrapyer,scoreler,categorysetter):
         try:
+            self._relatedsites = []       
+            self._catgorized_sites = {}
             #overview
             #use webdb api directory or a file analyzed by webdb api.
             #return a category given to a non-categorized url.
 
             #detail
-            #1.input a target url that is non-categorized.
-            # check this constructor.
-
-            #2.get relatedsites from a target url.
+            #1.get relatedsites(list) from a target url.
             # call scrapy
+            scrapyer.target(targeturl)
+            ret = scrapyer.do()
+            self._relatedsites = scrapyer.getRelatedUrl()
 
-            #3.categorized relatedsites.(call exefile or call C++API)
+            #2.categorized relatedsites.(call exefile or call C++API)
+            categorysetter.setData(self._relatedsites)
             self._categorized_sites = categorysetter.do()
  
-            #4.analyze categorized relatedsites.
+            #3.analyze categorized relatedsites.
+            scoreler.setData(self._categorized_sites)
             _category = scoreler.analyze()
             return _category
 
@@ -77,14 +71,14 @@ class CategoryValidator:
         return self._categorized_sites
 
         #for example 
-        {
-            "results":
-             [
-                {"url":"sample01.com,"cat":"categoryA"},
-                {"url":"sample02.com,"cat":"categoryB"},
-                {"url":"sample03.com,"cat":"categoryV"},
-                {"url":"sample04.com,"cat":"categoryA"}
-              ]
-        }
+        #{
+        #    "results":
+        #     [
+        #        {"url":"sample01.com,"cat":"categoryA"},
+        #        {"url":"sample02.com,"cat":"categoryB"},
+        #        {"url":"sample03.com,"cat":"categoryV"},
+        #        {"url":"sample04.com,"cat":"categoryA"}
+        #      ]
+        #}
 
 
