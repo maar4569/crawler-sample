@@ -10,23 +10,23 @@ class OutputWriter:
         raise Exception('abstract method')
 
 class Url2CsvWriter(OutputWriter):
-    def output(self,filename,urls):
+    def output(self,filename,urls,srcurl):
         try:
             fo = csv.writer(open(filename,'w'),lineterminator='\n',quoting=csv.QUOTE_NONNUMERIC)
             for k,v in urls.items():
-                fo.writerow([k,v])
+                fo.writerow([srcurl,k,v])
             return 0
         except Exception as e:
             raise Exception('exception in output()' + e.message)
 
 class Url2JsonWriter(OutputWriter):
-    def output(self,filename,urls):
+    def output(self,filename,urls,srcurl):
         try:
             list = []
             outputlist = []
             for k,v in urls.items():
                 list.append({"url":k,"category":v})
-            outputlist.append({"result":list})
+            outputlist.append({srcurl:list})
             json.dump(outputlist,open(filename,'w'),ensure_ascii=False)
             return 0
         except Exception as e:

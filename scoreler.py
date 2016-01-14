@@ -2,7 +2,10 @@
 
 import json
 class Scoreler:
-    def __init__(self,categorized_relatedsite):
+    def __init__(self):
+        self._relatedsite = {}
+
+    def setData(self,categorized_relatedsite):
         self._relatedsite = categorized_relatedsite
 
     def analyze(self):
@@ -13,12 +16,16 @@ class StdScoreler(Scoreler):
     def analyze(self):
         stats = {}
         try:
-            sites_len = len(self._relatedsite)
+            majorCategory= ""
+            majorScore   = 0
+            if len(self._relatedsite) == 0 : return -1
             for url,cat in self._relatedsite.items():
-                stats[cat] = 1 not if self._relatedsite.has_key(cat) else stats[cat]=stats[cat]+1
+                if not stats.has_key(cat):
+                    stats[cat]=1
+                else:
+                    stats[cat]=stats[cat]+1
             majorCategory = max(stats.items(), key=lambda x:x[1])[0]
             majorScore    = max(stats.items(), key=lambda x:x[1])[1]
-
             return majorCategory
-        except:
-            raise Exception('exception in do()')
+        except Exception as e:
+            raise Exception('exception in do()'+ e.message)
