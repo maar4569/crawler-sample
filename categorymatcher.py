@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+import callprocess
 class CategorySetter:
     def __init__(self,exepath,inputfile,outputfile):
         self._exepath =exepath
@@ -8,7 +9,7 @@ class CategorySetter:
         self._relatedurls = []
         self._categorized_url = {}
         self._rm_quoat   = lambda val: re.sub(r'\"','',val)
-    def do(self):
+    def do(self):      
         raise Exception('abstract method.')
 
     def setData(self,relatedurls):
@@ -27,16 +28,20 @@ class CategorySetter:
             raise Exception(e.args)
 
     def items(self):
-        return self._categorized_url
+        return self._categorized_url       
 
 class CategorySetterExe(CategorySetter):
     def do(self):
         try:
-            #call exe (write file)
+            #call exe (write file)a
             #subprocess category.exe
+            ret = callprocess.callhoge(self._exepath,self._inputfile,self._outputfile)
+            
             #open file defined categorized urls
             #sample http://domain.com,"news"
             ret = self._getCategorizedUrls()
+
+            return ret
         except Exception as e:
             raise Exception(e.args)
 
@@ -66,21 +71,23 @@ class CategoryValidator:
             #detail
             #1.get relatedsites(list) from a target url.
             # call scrapy
-            scrapyer.target(targeturl)
+            scrapyer.target(self._targeturl)
             ret = scrapyer.do()
             self._relatedsites = scrapyer.getRelatedUrl()
 
+
             #2.categorized relatedsites.(call exefile or call C++API)
             categorysetter.setData(self._relatedsites)
-            self._categorized_sites = categorysetter.do()
- 
+            ret  = categorysetter.do()
+            self._categorized_sites = categorysetter.items()
+
             #3.analyze categorized relatedsites.
             scoreler.setData(self._categorized_sites)
             _category = scoreler.analyze()
             return _category
 
-        except:
-            raise Exception
+        except Exception as e:
+            raise Exception(e.args) 
 
     def getDetail(self):
         return self._categorized_sites
