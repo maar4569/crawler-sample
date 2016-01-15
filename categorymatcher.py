@@ -1,27 +1,42 @@
 # -*- coding: utf-8 -*-
+import re
 class CategorySetter:
-    def __init__(self,exepath):
+    def __init__(self,exepath,inputfile,outputfile):
         self._exepath =exepath
+        self._inputfile = inputfile
+        self._outputfile = outputfile
         self._relatedurls = []
         self._categorized_url = {}
-
+        self._rm_quoat   = lambda val: re.sub(r'\"','',val)
     def do(self):
         raise Exception('abstract method.')
 
-    def setData(relatedurls):
+    def setData(self,relatedurls):
         self._relatedurls = relatedurls
-        
+ 
+    def _getCategorizedUrls(self): 
+        rm_quoat   = lambda val: re.sub(r'\"','',val)
+        try:
+            with open(self._outputfile) as fo:
+                for l in fo:
+                    url      = self._rm_quoat(l.split(",")[0].strip())
+                    category = self._rm_quoat(l.split(",")[1].strip())
+                    self._categorized_url[url] = category
+                return 0
+        except Exception as e:
+            raise Exception(e.args)
+
     def items(self):
         return self._categorized_url
 
 class CategorySetterExe(CategorySetter):
     def do(self):
         try:
-        #call exe (write file)
-        #subprocess category.exe
-        #open file defined categorized urls
-        #sample http://domain.com,"news"
-            print "success"      
+            #call exe (write file)
+            #subprocess category.exe
+            #open file defined categorized urls
+            #sample http://domain.com,"news"
+            ret = self._getCategorizedUrls()
         except Exception as e:
             raise Exception(e.args)
 
