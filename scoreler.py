@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import json
 class Scoreler:
     def __init__(self):
         self._relatedsite = {}

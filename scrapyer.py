@@ -29,12 +29,12 @@ class UrlScrapyer:
 class GoogSearchScrapyer(UrlScrapyer):
     def do(self):
         try:
+            related_url   = lambda val: re.sub(r'^/url\?\q\=','',val)
             res =requests.get(self._targeturl)
             res.raise_for_status()
             soup = BeautifulSoup(res.content , "html.parser")
             results = soup.findAll("h3", {'class':'r'})
             for link in results:
-                related_url   = lambda val: re.sub(r'^/url\?\q\=','',val)
                 self._relatedurl.append( related_url(link.a['href'].split('&')[0]) )
             return 0
         except requests.exceptions.RequestException as e:
