@@ -11,16 +11,19 @@ from mock import Mock
 class TestCategoryValidator(unittest.TestCase):
     def setUp(self):
 	self._url = 'https://www.google.co.jp/search?q=ruby'
-        self._validator= CategoryValidator(self._url)
+        self._transaction_id = "transaction_test"
+        self._validator= CategoryValidator(self._url,self._transaction_id)
         self._scrapyer       = GoogSearchScrapyer()
         self._scoreler       = StdScoreler()
 
         self._relatedurls = ["https://facebook.com","https://instagram.com"]
         #categorysetterexe
         exepath = "ls"
-        self._infile  = "nocaturl.txt"
+        #self._infile  = "nocaturl.txt"
+        self._infile  = self._transaction_id + ".scraped"
         self._outfile = "categorized_url.txt"
         self._categorysetter = CategorySetterExe(exepath,self._infile,self._outfile)
+        #self._categorysetter = CategorySetterExe()
         rm_quoat   = lambda val: re.sub(r'\"','',val)
 
     def test_categorysetterexe(self):
@@ -51,7 +54,7 @@ class TestCategoryValidator(unittest.TestCase):
 
         #outputjson
         writer = outputwriter.Url2JsonWriter()
-        writer.output("result.txt",self._validator.getDetail(),self._url)
+        writer.output(self._transaction_id +".json",self._validator.getDetail(),self._url)
         
     #use mock in scoreler and categorysetter 
     def test_success_scoreler_categorysetter_mock(self):

@@ -2,7 +2,11 @@
 import re
 import callprocess
 class CategorySetter:
+    #def __init__(self):
     def __init__(self,exepath,inputfile,outputfile):
+        #self._exepath =""
+        #self._inputfile = ""
+        #self._outputfile = ""
         self._exepath =exepath
         self._inputfile = inputfile
         self._outputfile = outputfile
@@ -31,8 +35,12 @@ class CategorySetter:
         return self._categorized_url       
 
 class CategorySetterExe(CategorySetter):
+    #def do(self,exepath,inputfile,outputfile):
     def do(self):
         try:
+            #self._exepath =exepath
+            #self._inputfile = inputfile
+            #self._outputfile = outputfile
             #call exe (write file)a
             #subprocess category.exe
             ret = callprocess.callhoge(self._exepath,self._inputfile,self._outputfile)
@@ -55,11 +63,11 @@ class CategorySetterAPI(CategorySetter):
 
 #given non-categrized url to this method and return category
 class CategoryValidator:
-    def __init__(self,targeturl):
+    def __init__(self,targeturl,transaction_name):
         self._targeturl = targeturl
         self._relatedsites = []       
         self._catgorized_sites = {}
-        self._trasaction_name = transaction_name
+        self._transaction_name = transaction_name
     def do(self,scrapyer,scoreler,categorysetter):
         try:
             self._relatedsites = []       
@@ -69,20 +77,21 @@ class CategoryValidator:
             #return a category given to a non-categorized url.
 
             #detail
-            #1.get relatedsites(list) from a target url.
+            #1.get relatedsites(list) from a target url and output csv
             # call scrapy
             scrapyer.target(self._targeturl)
             ret = scrapyer.do()
+            ret = scrapyer.output(self._transaction_name + ".scraped")
             self._relatedsites = scrapyer.getRelatedUrl()
 
-            #output
-            #ret = scrapyer.output(filename,self._relatedsites)
 
             #2.categorized relatedsites.(call exefile or call C++API)
-            categorysetter.setData(self._relatedsites)
             ret  = categorysetter.do()
             self._categorized_sites = categorysetter.items()
 
+            #if call API , use this method below
+            #categorysetter.setData(self._relatedsites)
+            
             #3.analyze categorized relatedsites.
             scoreler.setData(self._categorized_sites)
             _category = scoreler.analyze()

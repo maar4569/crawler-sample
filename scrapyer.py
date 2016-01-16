@@ -3,10 +3,12 @@
 from __future__ import with_statement
 import re
 import requests
+import outputwriter
 from bs4 import BeautifulSoup
 
 class UrlScrapyer:
     def __init__(self):
+        self._targeturl = ""
         self._relatedurl = []
         self.__pages       = 0
         self.__currentpage = 1
@@ -16,6 +18,14 @@ class UrlScrapyer:
     def do(self):
         raise "abstract method"
 
+    def output(self,filename):
+        try:
+            ow = outputwriter.List2File()
+            print len(self._relatedurl)
+            ret = ow.output(filename,self._relatedurl)
+            return 0
+        except Exception as e:
+            raise Exception(e)
 class GoogSearchScrapyer(UrlScrapyer):
     def do(self):
         try:
@@ -32,7 +42,3 @@ class GoogSearchScrapyer(UrlScrapyer):
 
     def getRelatedUrl(self):
         return self._relatedurl
-
-
-
-
