@@ -5,7 +5,7 @@ import json
 
 class OutputWriter:
     def __init__(self):
-        _i = 0 
+        self._i = 0 
     def output(self):
         raise Exception('abstract method')
 
@@ -22,12 +22,18 @@ class Url2CsvWriter(OutputWriter):
 class Url2JsonWriter(OutputWriter):
     def output(self,filename,urls,srcurl):
         try:
-            list = []
-            outputlist = []
+            catList = []
+            relList = []
             for k,v in urls.items():
-                list.append({"url":k,"category":v})
-            outputlist.append({srcurl:list})
-            json.dump(outputlist,open(filename,'w'),ensure_ascii=False)
+                catList.append(v)
+                relList.append(k)
+            evt = json.dumps({"res":[{"id":self._i+1},{"category":"あああ"},{"srcURL":srcurl},
+                             {"r":relList},{"c":catList}]},ensure_ascii=False)
+            print evt
+            json.dump({"res":[{"id":self._i+1},{"category":"あああ"},{"srcURL":srcurl},
+                             {"r":relList},{"c":catList}]},open(filename,'a'),ensure_ascii=False)
+            self._i=self._i+1
+  
             return 0
         except Exception as e:
             raise Exception(e)
