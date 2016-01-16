@@ -9,11 +9,11 @@ export PYTHONPATH=$PYTHONPATH:`pwd -P`
 #OK
 #python tests/test_scoreler.py
 #OK
-#python tests/test_scrapyer.py
+python tests/test_scrapyer.py
 
 #OK
 #python tests/test_callprocess.py
 
 
 #processing
-python tests/test_categorymatcher.py
+#python tests/test_categorymatcher.py

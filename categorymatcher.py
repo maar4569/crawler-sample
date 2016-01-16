@@ -59,7 +59,7 @@ class CategoryValidator:
         self._targeturl = targeturl
         self._relatedsites = []       
         self._catgorized_sites = {}
-
+        self._trasaction_name = transaction_name
     def do(self,scrapyer,scoreler,categorysetter):
         try:
             self._relatedsites = []       
@@ -75,6 +75,8 @@ class CategoryValidator:
             ret = scrapyer.do()
             self._relatedsites = scrapyer.getRelatedUrl()
 
+            #output
+            #ret = scrapyer.output(filename,self._relatedsites)
 
             #2.categorized relatedsites.(call exefile or call C++API)
             categorysetter.setData(self._relatedsites)

@@ -32,4 +32,14 @@ class Url2JsonWriter(OutputWriter):
         except Exception as e:
             raise Exception(e)
 
+class List2File(OutputWriter):
+    def output(self,filename,datalist):
+        try:
+            fo = csv.writer(open(filename,'w'),lineterminator='\n',quoting=csv.QUOTE_NONNUMERIC)
+            for v in datalist:
+                fo.writerow([v])
+            return 0
+        except Exception as e:
+            raise Exception(e)
+
 

@@ -2,7 +2,7 @@
 
 import unittest
 import scrapyer
-
+import outputwriter
 class TestGoogleSearchScrapyer(unittest.TestCase):
     def setUp(self):
 	self._url = 'https://www.google.co.jp/search?q=ruby'
@@ -22,6 +22,7 @@ class TestGoogleSearchScrapyer(unittest.TestCase):
             self._scrapyer.do()
 
         print cnmgr.exception
+    #success
     def test_do_success(self):
         self._scrapyer.target(self._url)
         ret=self._scrapyer.do()
@@ -32,6 +33,14 @@ class TestGoogleSearchScrapyer(unittest.TestCase):
         ret=self._scrapyer.do()
         relatedUrl = self._scrapyer.getRelatedUrl()
         self.assertGreater(len(relatedUrl),0)
+
+    def test_output_success(self):
+        filename = "scrapyer_output_test.txt"
+        self._scrapyer.target(self._url)
+        ret=self._scrapyer.do()
+        print self._scrapyer.getRelatedUrl()
+        ret = self._scrapyer.output(filename)
+        self.assertEqual(ret,0)
 
 if __name__ == "__main__":
     unittest.main()

@@ -32,7 +32,7 @@ class TestCategoryValidator(unittest.TestCase):
       
     #success
     #use mock in all classes
-    def test_success_categoryvalidator(self):
+    def test_success_all_mock(self):
         #scraper mock
         self._scrapyer.target(self._url)
         self._scrapyer.do = Mock()
@@ -54,7 +54,7 @@ class TestCategoryValidator(unittest.TestCase):
         writer.output("result.txt",self._validator.getDetail(),self._url)
         
     #use mock in scoreler and categorysetter 
-    def test_success_categoryvalidator2(self):
+    def test_success_scoreler_categorysetter_mock(self):
         #scrapyer real internet access.
         self._scrapyer.target(self._url)
         
@@ -69,7 +69,7 @@ class TestCategoryValidator(unittest.TestCase):
         self.assertEqual(category,"searchengine")
 
     #use mock in categorysetter 
-    def test_success_categoryvalidator3(self):
+    def test_success_categorysetter_mock(self):
         #scrapyer real internet access.
         self._scrapyer.target(self._url)
 
