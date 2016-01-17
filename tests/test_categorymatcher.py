@@ -21,7 +21,7 @@ class TestCategoryValidator(unittest.TestCase):
         exepath = "ls"
         #self._infile  = "nocaturl.txt"
         self._infile  = self._transaction_id + ".scraped"
-        self._outfile = "categorized_url.txt"
+        self._outfile = self._transaction_id + ".categorized"
         self._categorysetter = CategorySetterExe(exepath,self._infile,self._outfile)
         #self._categorysetter = CategorySetterExe()
         rm_quoat   = lambda val: re.sub(r'\"','',val)

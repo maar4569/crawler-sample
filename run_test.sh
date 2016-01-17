@@ -9,7 +9,7 @@ export PYTHONPATH=$PYTHONPATH:`pwd -P`
 #OK
 #python tests/test_scoreler.py
 #OK
-python tests/test_scrapyer.py
+#python tests/test_scrapyer.py
 
 #OK
 #python tests/test_callprocess.py
@@ -17,3 +17,15 @@ python tests/test_scrapyer.py
 
 #processing
 #python tests/test_categorymatcher.py
+
+#OK
+#python tests/test_outputformatter.py
+
+#processing
+python tests/test_crawler.py
+
+
+#JSONStreamwriter test 
+#python test.py
+
+
