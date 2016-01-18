@@ -14,17 +14,19 @@ from scrapyer import GoogSearchScrapyer
 if __name__ == "__main__":
 
     print u"main start!" 
+    try:
+        scraper        = GoogSearchScrapyer()
+        categorysetter = CategorySetterExe()
+        scoreler       = StdScoreler()
+        configger      = CrawlerConfig("/crawler_config.yml")
+        config         = configger.load()
+        exepath        = config["settings"]["exepath"]
+        tmpdir         = config["settings"]["transactiondir"]
+        result_json    = config["settings"]["outputjson"]
+        no_cat_url_list = config["settings"]["noncaturls"]
+    except Exception as e:
+        raise Exception
 
-    scraper        = GoogSearchScrapyer()
-    categorysetter = CategorySetterExe()
-    scoreler       = StdScoreler()
-    configger      = CrawlerConfig("/config.yaml")
-    config         = configger.load()
-    exepath        = config["settings"]["exepath"]
-    tmpdir         = config["settings"]["transactiondir"]
-    result_json    = config["settings"]["outputjson"]
-    no_cat_url_list = config["settings"]["noncaturls"]
-    
     i=0
     with open(self._no_cat_url_list) as fo:
         with JSONStreamWriter.ArrayWriter(result_json) as jstream:

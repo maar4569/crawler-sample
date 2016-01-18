@@ -1,0 +1,5 @@
+settings:
+    transactiondir: ./tmp
+    exepath: ls
+    outputjson: ./result.json
+    noncaturls: ./list

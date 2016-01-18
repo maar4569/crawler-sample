@@ -9,6 +9,7 @@ class CrawlerConfig(object):
     def load(self):
         try:
             self._config   = yaml.load(self._fo)
+            self._fo.close()
             return self._config
 
         except Exception as e:

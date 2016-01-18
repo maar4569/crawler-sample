@@ -15,11 +15,15 @@ class StdScoreler(Scoreler):
     """return a scored category.analyze which category the relatedsites belong to.
            args: Scoreler object
 
-           return caregoryname
+           return caregory name
 
 
     """
     def analyze(self):
+        """ analyze a category of a target url.
+            
+                return : category name
+        """ 
         stats = {}
         try:
             majorCategory= ""

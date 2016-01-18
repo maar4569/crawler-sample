@@ -22,13 +22,19 @@ class UrlScrapyer:
     def output(self,filename):
         try:
             ow = outputwriter.List2File()
-            print len(self._relatedurl)
             ret = ow.output(filename,self._relatedurl)
             return 0
         except Exception as e:
             raise Exception(e)
 class GoogSearchScrapyer(UrlScrapyer):
     def do(self):
+    """
+    scraping Urls from a first result page in google search.
+    when given target url(into textbox with 'related:'), and return related urls.
+
+    return:
+       normally 0 , abnormally raise Exception.
+    """
         related_url   = lambda val: re.sub(r'^/url\?\q\=','',val)
         try:
             #related_url   = lambda val: re.sub(r'^/url\?\q\=','',val)

@@ -12,7 +12,7 @@ class OutputWriter:
 class Url2CsvWriter(OutputWriter):
     def output(self,filename,urls,srcurl):
         try:
-            fo = csv.writer(open(filename,'w'),lineterminator='\n',quoting=csv.QUOTE_NONNUMERIC)
+            fo = csv.writer(open(filename,'a'),lineterminator='\n',quoting=csv.QUOTE_NONNUMERIC)
             for k,v in urls.items():
                 fo.writerow([srcurl,k,v])
             return 0
@@ -20,7 +20,6 @@ class Url2CsvWriter(OutputWriter):
             raise Exception(e)
 
 class Url2JsonWriter(OutputWriter):
-    #def __init__(self,filename):
     def output(self,filename,tid,urls,srcurl):
         try:
             catList = []

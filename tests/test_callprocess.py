@@ -9,7 +9,7 @@ class TestCallProcess(unittest.TestCase):
         print "setup"
     #success
     def test_success(self):
-        ret = callprocess.callhoge("ls -al","a","b")
+        ret = callprocess.callhoge("ls")
         self.assertEqual(ret,0)
 
     #error
