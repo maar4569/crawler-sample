@@ -8,10 +8,17 @@ class Scoreler:
         self._relatedsite = categorized_relatedsite
 
     def analyze(self):
-        raise Exception('abstract method.')
+        #raise Exception('abstract method.')
+        raise NotImplementedError()
 
 class StdScoreler(Scoreler):
-    #return a scored category.analyze which category the relatedsites belong to.
+    """return a scored category.analyze which category the relatedsites belong to.
+           args: Scoreler object
+
+           return caregoryname
+
+
+    """
     def analyze(self):
         stats = {}
         try:

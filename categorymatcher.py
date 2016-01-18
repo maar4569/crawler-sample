@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 import callprocess
-class CategorySetter:
+class CategorySetter(object):
     #def __init__(self):
     def __init__(self,exepath,inputfile,outputfile):
         self._exepath =exepath
@@ -34,7 +34,9 @@ class CategorySetter:
         return self._categorized_url       
 
 class CategorySetterExe(CategorySetter):
-    #def do(self,exepath,inputfile,outputfile):
+    """set category with CLI application.
+       CLI application  given urllist  , return categorized urllist.
+    """
     def do(self):
         try:
             #call exe (write file)a
@@ -60,13 +62,30 @@ class CategorySetterAPI(CategorySetter):
             raise Exception(e.args)
 
 #given non-categrized url to this method and return category
-class CategoryValidator:
+class CategoryValidator(object):
+    """ validate non-categorized url , and given it to a category.
+        public attributes:
+        - none
+        public method:
+        - do: validate non-categorized url , and return it.
+        - getDetail: return Urls related to  non-categorized url.
+    """
     def __init__(self,targeturl,transaction_name):
         self._targeturl = targeturl
         self._relatedsites = []       
         self._categorized_sites = {}
         self._transaction_name = transaction_name
     def do(self,scrapyer,scoreler,categorysetter):
+        """ validate non-categorized url
+        args:
+            scrapyer : scrapyer object.
+            scoreler : scoreler object.
+            categorysetter : categorysetter object.
+
+        return:
+            if normally ,return a category(strings)
+            if abnormally ,raise Exception
+        """
         try:
             self._relatedsites = []       
             self._categorized_sites = {}
@@ -98,6 +117,13 @@ class CategoryValidator:
             raise Exception(e.args) 
 
     def getDetail(self):
+        """ return urls related to a non-categorized url.
+        these urls are categorized with a categorysetter object , 
+        and contained in list.
+        
+        return:
+             List of categorized urls. 
+        """
         return self._categorized_sites
 
 

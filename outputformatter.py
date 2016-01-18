@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 #format categorized URLs
 def Urls2csv(srcurl,category,urls,tid):
+    """ output urlslist to csv file.
+
+        args:
+            srcurl   : srcURL  (string)
+            category : category(string)
+            urls     : List of urls(list)
+            tid      : transactionid(string)
+    """
     try:
         if tid =="" : -9999
         csvList = []

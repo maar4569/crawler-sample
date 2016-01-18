@@ -16,7 +16,8 @@ class UrlScrapyer:
         self._targeturl = targeturl
 
     def do(self):
-        raise "abstract method"
+        #raise "abstract method"
+        raise NotImplementedError()
 
     def output(self,filename):
         try:
@@ -28,8 +29,9 @@ class UrlScrapyer:
             raise Exception(e)
 class GoogSearchScrapyer(UrlScrapyer):
     def do(self):
+        related_url   = lambda val: re.sub(r'^/url\?\q\=','',val)
         try:
-            related_url   = lambda val: re.sub(r'^/url\?\q\=','',val)
+            #related_url   = lambda val: re.sub(r'^/url\?\q\=','',val)
             res =requests.get(self._targeturl)
             res.raise_for_status()
             soup = BeautifulSoup(res.content , "html.parser")
@@ -42,3 +44,9 @@ class GoogSearchScrapyer(UrlScrapyer):
 
     def getRelatedUrl(self):
         return self._relatedurl
+
+
+    def __iter__(self):
+        for url in self._relatedurl:
+            yield url
+

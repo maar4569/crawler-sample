@@ -86,6 +86,53 @@ class TestCategoryValidator(unittest.TestCase):
 
                     
                     i=i+1
+    #error raise error
+    #
+    def test_error_all_mock_many_records(self):
+        print "*******error_all_mock_many_records"
+        result_json  = "result_error.json"
+        i=0
+        with open(self._no_cat_url_list) as fo:
+            with JSONStreamWriter.ArrayWriter(result_json) as jstream:
+                for url in fo:
+                    if url.strip()== "" : continue
+                    try:
+                        print "transactionID=>" + str(time.time()).replace(".","_")
+                        #scraper mock raise exception
+                        self._scrapyer.target(url)
+                        self._scrapyer.do = Mock()
+                        if i==0:
+                            self._scrapyer.do.return_value = 0
+                        else:
+                            self._scrapyer.do.side_effect = Exception
+
+                        self._scrapyer.output = Mock()
+                        self._scrapyer.output.return_value = 0
+ 
+                        self._scrapyer.getRelatedUrl = Mock()
+                        self._scrapyer.getRelatedUrl.return_value = self._relatedurls
+                    
+                        self._exepath = "ls"
+                        fpath         = "./tests/data/"
+                        self._infile  = fpath + self._transaction_id + str(i+1) + ".scraped"
+                        self._outfile = fpath + self._transaction_id + str(i+1) + ".categorized"
+                        self._categorysetter = CategorySetterExe(self._exepath,self._infile,self._outfile)
+                        ret = self._categorysetter.do()
+                     
+                        wkValidator  = CategoryValidator(self._url,fpath + self._transaction_id + str(i))
+                        #wkValidator  = CategoryValidator(self._url,self._transaction_id + str(i))
+                        category = wkValidator.do(self._scrapyer,self._scoreler,self._categorysetter)
+
+                        #outputjson
+                        evt = fmter.Urls2Json(url,category,wkValidator.getDetail(),self._transaction_id)
+                        jstream.write(evt)
+
+                    
+                        i=i+1
+                    except Exception as e:
+                        print "raise exception !! continue---------------------------------"
+                        continue                       
+
 
 if __name__ == "__main__":
     unittest.main()
