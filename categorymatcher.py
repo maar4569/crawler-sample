@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import re
 import callprocess
+import log
+import sys
 class CategorySetter(object):
     #def __init__(self):
     def __init__(self,exepath,inputfile,outputfile):
@@ -10,11 +12,12 @@ class CategorySetter(object):
         self._relatedurls = []
         self._categorized_url = {}
         self._rm_quoat   = lambda val: re.sub(r'\"','',val)
+        self._mylog = log.myLogger(self.__class__.__name__)
     def do(self):      
         raise Exception('abstract method.')
 
-    #def setData(self,relatedurls):
-    #    self._relatedurls = relatedurls
+    def setData(self,relatedurls):
+        self._relatedurls = relatedurls
  
     def _getCategorizedUrls(self):
         print "call _getCategorizedUrls" + self._outputfile
@@ -27,7 +30,7 @@ class CategorySetter(object):
                     self._categorized_url[url] = category
                 return 0
         except Exception as e:
-            print " outputfile:" + self._outputfile
+            self._mylog.error(" outputfile:" + self._outputfile)
             raise Exception(e.args)
 
     def items(self):
@@ -49,7 +52,7 @@ class CategorySetterExe(CategorySetter):
 
             return ret
         except Exception as e:
-            print "inputfile:" + self._inputfile +  " outputfile:" + self._outputfile
+            self._mylog.error("inputfile:" + self._inputfile +  " outputfile:" + self._outputfile)
             raise Exception(e.args)
 
 class CategorySetterAPI(CategorySetter):
@@ -75,6 +78,7 @@ class CategoryValidator(object):
         self._relatedsites = []       
         self._categorized_sites = {}
         self._transaction_name = transaction_name
+        self._mylog = log.myLogger(self.__class__.__name__)
     def do(self,scrapyer,scoreler,categorysetter):
         """ validate non-categorized url
         args:
@@ -96,6 +100,7 @@ class CategoryValidator(object):
             #detail
             #1.get relatedsites(list) from a target url and output csv
             # call scrapy
+            self._mylog.info('search this URL =>' + self._targeturl)
             scrapyer.target(self._targeturl)
             ret = scrapyer.do()
             scrapedURLfile = self._transaction_name + ".scraped"
@@ -106,15 +111,17 @@ class CategoryValidator(object):
             #2.categorized relatedsites.(call exefile or call C++API)
             ret  = categorysetter.do()
             self._categorized_sites = categorysetter.items()
+            self._mylog.info('set relatedURLs to category.')
 
             #3.analyze categorized relatedsites.
             scoreler.setData(self._categorized_sites)
             _category = scoreler.analyze()
+            self._mylog.info('analyzed. [' + _category  + '] => ' + self._targeturl)
             return _category
 
         except Exception as e:
-            print "inputfile:" + self._inputfile +  " outputfile:" + self._outputfile
-            raise Exception(e.args) 
+            self._mylog.error(e.message)
+            raise Exception(e) 
 
     def getDetail(self):
         """ return urls related to a non-categorized url.

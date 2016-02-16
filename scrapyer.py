@@ -5,13 +5,16 @@ import re
 import requests
 import outputwriter
 from bs4 import BeautifulSoup
-
+import log
+import types
+import sys
 class UrlScrapyer:
     def __init__(self):
         self._targeturl = ""
         self._relatedurl = []
         self.__pages       = 0
         self.__currentpage = 1
+        self._mylog = log.myLogger(self.__class__.__name__)
     def target(self,targeturl):
         self._targeturl = targeturl
 
@@ -28,13 +31,13 @@ class UrlScrapyer:
             raise Exception(e)
 class GoogSearchScrapyer(UrlScrapyer):
     def do(self):
-    """
-    scraping Urls from a first result page in google search.
-    when given target url(into textbox with 'related:'), and return related urls.
+        """ scraping Urls from a first result page in google search.
+        when given target url(into textbox with 'related:'), and return related urls.
 
-    return:
-       normally 0 , abnormally raise Exception.
-    """
+        return:
+            normally 0 , abnormally raise Exception.
+
+        """
         related_url   = lambda val: re.sub(r'^/url\?\q\=','',val)
         try:
             #related_url   = lambda val: re.sub(r'^/url\?\q\=','',val)
@@ -46,7 +49,13 @@ class GoogSearchScrapyer(UrlScrapyer):
                 self._relatedurl.append( related_url(link.a['href'].split('&')[0]) )
             return 0
         except requests.exceptions.RequestException as e:
-            raise Exception(e)
+            if isinstance(e.message,requests.packages.urllib3.exceptions.SSLError):
+                msg = e.message.message.message
+            else:
+                msg = e.message
+            self._mylog.error(msg)
+            methodname = sys._getframe(1).f_code.co_name
+            raise Exception("raised exception. in " + self.__class__.__name__ + "." +  methodname + "()")
 
     def getRelatedUrl(self):
         return self._relatedurl

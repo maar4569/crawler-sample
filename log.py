@@ -13,7 +13,7 @@ class myLogger(object):
             self._log.debug(self._classname + "." + methodname + "() : " +  message)
         except Exception as e:
             self._log.exception("error occured.")
-            raise Exception(e.args)
+            raise Exception(e)
 
     def warning(self,message):
         try:
@@ -21,7 +21,7 @@ class myLogger(object):
             self._log.warning(self._classname + "." + methodname + "() : " +  message)
         except Exception as e:
             self._log.exception("error occured.")
-            raise Exception(e.args)
+            raise Exception(e)
 
     def info(self,message):
         try:
@@ -29,7 +29,7 @@ class myLogger(object):
             self._log.info(self._classname + "." + methodname + "() : " +  message)
         except Exception as e:
             self._log.exception("error occured.")
-            raise Exception(e.args)
+            raise Exception(e)
 
     def error(self,message):
         try:
@@ -37,6 +37,6 @@ class myLogger(object):
             self._log.error(self._classname + "." + methodname + "() : " +  message)
         except Exception as e:
             self._log.exception("error occured.")
-            raise Exception(e.args)
+            raise Exception(e)
 
 

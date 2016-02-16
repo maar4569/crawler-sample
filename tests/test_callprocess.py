@@ -2,11 +2,14 @@
 
 import unittest
 import callprocess
-
-
+import yaml
+import logging.config
 class TestCallProcess(unittest.TestCase):
     def setUp(self):
         print "setup"
+        conf = yaml.load(open('log.config','r'))
+        logging.config.dictConfig(conf)
+ 
     #success
     def test_success(self):
         ret = callprocess.callhoge("ls")

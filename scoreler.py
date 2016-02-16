@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-
-class Scoreler:
+import log
+class Scoreler(object):
     def __init__(self):
         self._relatedsite = {}
+        self._mylog = log.myLogger(self.__class__.__name__)
 
     def setData(self,categorized_relatedsite):
         self._relatedsite = categorized_relatedsite
@@ -38,4 +39,6 @@ class StdScoreler(Scoreler):
             majorScore    = max(stats.items(), key=lambda x:x[1])[1]
             return majorCategory
         except Exception as e:
+            self._mylog.error(e.message)
             raise Exception(e)
+

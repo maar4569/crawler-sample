@@ -7,10 +7,12 @@ from scoreler import StdScoreler
 import outputwriter
 import re
 from mock import Mock
-
+import yaml
+import logging.config
 class TestCategoryValidator(unittest.TestCase):
     def setUp(self):
 	self._url = 'https://www.google.co.jp/search?q=ruby'
+        self._testdatadir    = "./tests/data/"
         self._transaction_id = "transaction_test"
         self._validator= CategoryValidator(self._url,self._transaction_id)
         self._scrapyer       = GoogSearchScrapyer()
@@ -20,11 +22,16 @@ class TestCategoryValidator(unittest.TestCase):
         #categorysetterexe
         exepath = "ls"
         #self._infile  = "nocaturl.txt"
-        self._infile  = self._transaction_id + ".scraped"
-        self._outfile = self._transaction_id + ".categorized"
+        self._infile  = self._testdatadir + self._transaction_id + "1.scraped"
+        self._outfile = self._testdatadir + self._transaction_id + "1.categorized"
         self._categorysetter = CategorySetterExe(exepath,self._infile,self._outfile)
         #self._categorysetter = CategorySetterExe()
         rm_quoat   = lambda val: re.sub(r'\"','',val)
+        #logging
+        f= open('log.config','r')
+        conf = yaml.load(f)
+        f.close()
+        logging.config.dictConfig(conf)
 
     def test_categorysetterexe(self):
         #set relatedurls(list)
@@ -48,13 +55,16 @@ class TestCategoryValidator(unittest.TestCase):
 
         #categorysetter mock
         self._categorysetter.setData(self._relatedurls)
-        self._categorysetter.do()
+        self._categorysetter.do = Mock()
+        self._categorysetter.return_value = 0
+        self._categorysetter._getCategorizedUrls()             
+       
         category = self._validator.do(self._scrapyer,self._scoreler,self._categorysetter)
         self.assertEqual(category,"searchengine")
 
         #outputjson
         writer = outputwriter.Url2JsonWriter()
-        writer.output(self._transaction_id +".json",self._validator.getDetail(),self._url)
+        writer.output(self._transaction_id +".json",self._transaction_id,self._validator.getDetail(),self._url)
         
     #use mock in scoreler and categorysetter 
     def test_success_scoreler_categorysetter_mock(self):
@@ -66,7 +76,12 @@ class TestCategoryValidator(unittest.TestCase):
         self._scoreler.analyze.return_value = "searchengine"
 
         #categorysetter mock
-        self._categorysetter.do()
+        self._categorysetter.setData(self._relatedurls)
+        self._categorysetter.do = Mock()
+        self._categorysetter.return_value = 0
+        self._categorysetter._getCategorizedUrls()             
+ 
+
         category = self._validator.do(self._scrapyer,self._scoreler,self._categorysetter)
         print self._validator.getDetail()
         self.assertEqual(category,"searchengine")
@@ -77,11 +92,15 @@ class TestCategoryValidator(unittest.TestCase):
         self._scrapyer.target(self._url)
 
         #categorysetter mock
-        self._categorysetter.do()
+        self._categorysetter.setData(self._relatedurls)
+        self._categorysetter.do = Mock()
+        self._categorysetter.return_value = 0
+        self._categorysetter._getCategorizedUrls()             
+        #self._categorysetter.do()
         category = self._validator.do(self._scrapyer,self._scoreler,self._categorysetter)
 
         print self._validator.getDetail()
-        self.assertEqual(category,"SNS")
+        self.assertEqual(category,"lang")
 
     #error
     #use mock in all classes
@@ -97,8 +116,12 @@ class TestCategoryValidator(unittest.TestCase):
         self._scoreler.analyze.return_value = "searchengine"
 
         #categorysetter mock
+        self._categorysetter.do = Mock()
+        self._categorysetter.return_value = 0
+        self._categorysetter._getCategorizedUrls()             
+        
         self._categorysetter.setData(self._relatedurls)
-        self._categorysetter.do()
+        #self._categorysetter.do()
         with self.assertRaises(Exception) as cnmgr:
             self._validator.do(self._scrapyer,self._scoreler,self._categorysetter)
         print cnmgr.exception
@@ -116,8 +139,12 @@ class TestCategoryValidator(unittest.TestCase):
         self._scoreler.analyze.side_effect = Exception
 
         #categorysetter mock
+        self._categorysetter.do = Mock()
+        self._categorysetter.return_value = 0
+        self._categorysetter._getCategorizedUrls()             
+        
         self._categorysetter.setData(self._relatedurls)
-        self._categorysetter.do()
+        #self._categorysetter.do()
         with self.assertRaises(Exception) as cnmgr:
             self._validator.do(self._scrapyer,self._scoreler,self._categorysetter)
         print cnmgr.exception
