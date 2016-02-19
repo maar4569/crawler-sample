@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
-import callprocess
-#import log
+from crawler.apps import callprocess
 from crawler.utils import log
 import sys
 class CategorySetter(object):
@@ -79,6 +78,7 @@ class CategoryValidator(object):
         self._relatedsites = []       
         self._categorized_sites = {}
         self._transaction_name = transaction_name
+        self._category_name= ''
         self._mylog = log.myLogger(self.__class__.__name__)
     def do(self,scrapyer,scoreler,categorysetter):
         """ validate non-categorized url
@@ -116,9 +116,11 @@ class CategoryValidator(object):
 
             #3.analyze categorized relatedsites.
             scoreler.setData(self._categorized_sites)
-            _category = scoreler.analyze()
-            self._mylog.info('analyzed. [' + _category  + '] => ' + self._targeturl)
-            return _category
+            #_category = scoreler.analyze()
+            #self._mylog.info('analyzed. [' + _category  + '] => ' + self._targeturl)
+            self._category_name = scoreler.analyze()
+            self._mylog.info('analyzed. [' + self._category_name  + '] => ' + self._targeturl)
+            return self._category_name
 
         except Exception as e:
             self._mylog.error(e.message)

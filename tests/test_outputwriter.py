@@ -41,18 +41,18 @@ class TestOutputCsvWriter(unittest.TestCase):
 
     def test_json_success_output(self):
         if os.path.exists(self._jsonfile) : os.remove(self._jsonfile)
-        ret = self.jsonwriter.output(self._jsonfile,100,self._urls,self._srcurl)
+        ret = self.jsonwriter.output(self._jsonfile,100,'dummycategory',self._urls,self._srcurl)
         self.assertEqual(ret , 0)
 
     def test_json_success_output_multievents(self):
         if os.path.exists(self._jsonfile) : os.remove(self._jsonfile)
-        ret = self.jsonwriter.output(self._jsonfile,100,self._urls,self._srcurl)
+        ret = self.jsonwriter.output(self._jsonfile,100,'dummycategory',self._urls,self._srcurl)
 
         urls2   = {}
         urls2["http://www.netflix.com"] = "media"
         urls2["http://www.huffingtonpost.com"] = "media"
         srcurl2 = "http://buzzfeed.com"
-        ret = self.jsonwriter.output(self._jsonfile,300,urls2,srcurl2)
+        ret = self.jsonwriter.output(self._jsonfile,300,'dummycategory2',urls2,srcurl2)
         self.assertEqual(ret , 0)
 if __name__ == "__main__":
     unittest.main()

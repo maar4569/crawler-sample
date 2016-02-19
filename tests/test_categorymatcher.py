@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from categorymatcher import CategorySetterExe,CategoryValidator
-from scrapyer import GoogSearchScrapyer
-from scoreler import StdScoreler
-import outputwriter
+from crawler.apps.categorymatcher import CategorySetterExe,CategoryValidator
+from crawler.apps.scrapyer import GoogSearchScrapyer
+from crawler.apps.scoreler import StdScoreler
+from crawler.apps.outputwriter import Url2JsonWriter
 import re
 from mock import Mock
 import yaml
@@ -21,17 +21,10 @@ class TestCategoryValidator(unittest.TestCase):
         self._relatedurls = ["https://facebook.com","https://instagram.com"]
         #categorysetterexe
         exepath = "ls"
-        #self._infile  = "nocaturl.txt"
         self._infile  = self._testdatadir + self._transaction_id + "1.scraped"
         self._outfile = self._testdatadir + self._transaction_id + "1.categorized"
         self._categorysetter = CategorySetterExe(exepath,self._infile,self._outfile)
-        #self._categorysetter = CategorySetterExe()
         rm_quoat   = lambda val: re.sub(r'\"','',val)
-        #logging
-        #f= open('./config/log.config','r')
-        #conf = yaml.load(f)
-        #f.close()
-        #logging.config.dictConfig(conf)
 
     def test_categorysetterexe(self):
         #set relatedurls(list)
@@ -63,8 +56,8 @@ class TestCategoryValidator(unittest.TestCase):
         self.assertEqual(category,"searchengine")
 
         #outputjson
-        writer = outputwriter.Url2JsonWriter()
-        writer.output(self._transaction_id +".json",self._transaction_id,self._validator.getDetail(),self._url)
+        writer = Url2JsonWriter()
+        writer.output(self._transaction_id +".json",self._validator)
         
     #use mock in scoreler and categorysetter 
     def test_success_scoreler_categorysetter_mock(self):

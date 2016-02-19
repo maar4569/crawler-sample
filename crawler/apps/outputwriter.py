@@ -19,8 +19,8 @@ class Url2CsvWriter(OutputWriter):
         except Exception as e:
             raise Exception(e)
 
-class Url2JsonWriter(OutputWriter):
-    def output(self,filename,tid,urls,srcurl):
+class Url2JsonWriterOLD(OutputWriter):
+    def output(self,filename,tid,category,urls,srcurl):
         try:
             catList = []
             relList = []
@@ -28,7 +28,27 @@ class Url2JsonWriter(OutputWriter):
                 catList.append(v)
                 relList.append(k)
             #make dictionary
-            evt2 = {"res":[{"id":tid},{"category":"あ"},{"srcURL":srcurl},{"r":relList},{"c":catList}]}
+            evt2 = {"res":[{"id":tid},{"category":category},{"srcURL":srcurl},{"r":relList},{"c":catList}]}
+
+            json.dump(evt2,open(filename,'a'),ensure_ascii=False)
+
+            return 0
+        except Exception as e:
+            raise Exception(e)
+
+class Url2JsonWriter(OutputWriter):
+    def output(self,filename,validator):
+        try:
+            catList = []
+            relList = []
+            for k,v in validator._categorized_sites.items():
+                catList.append(v)
+                relList.append(k)
+            #make dictionary
+            evt2 = {"res":[{"id":validator._transaction_name}, \
+                           {"category":validator._category_name}, \
+                           {"srcURL":validator._targeturl}, \
+                           {"r":relList},{"c":catList}]}
 
             json.dump(evt2,open(filename,'a'),ensure_ascii=False)
 
