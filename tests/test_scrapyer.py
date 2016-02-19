@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-import scrapyer
-import outputwriter
+from crawler.apps import scrapyer
+from crawler.apps import outputwriter
 class TestGoogleSearchScrapyer(unittest.TestCase):
     def setUp(self):
 	self._url = 'https://www.google.co.jp/search?q=ruby'

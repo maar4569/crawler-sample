@@ -2,7 +2,7 @@
 
 import unittest
 import os
-import outputwriter
+from crawler.apps import outputwriter
 
 
 class TestOutputCsvWriter(unittest.TestCase):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-import relatedsite
+from crawler.apps import relatedsite
 
 
 class TestRelatedSite(unittest.TestCase):

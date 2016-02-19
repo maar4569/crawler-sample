@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-import relatedsite
-import scoreler
+from crawler.apps import relatedsite
+from crawler.apps import scoreler
 
 
 class TestScoreler(unittest.TestCase):

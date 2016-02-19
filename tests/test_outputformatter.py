@@ -3,7 +3,7 @@
 import unittest
 import os
 import json
-import outputformatter as fmter
+import crawler.apps.outputformatter as fmter
 
 
 class TestOutputFormatter(unittest.TestCase):

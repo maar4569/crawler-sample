@@ -28,10 +28,10 @@ class TestCategoryValidator(unittest.TestCase):
         #self._categorysetter = CategorySetterExe()
         rm_quoat   = lambda val: re.sub(r'\"','',val)
         #logging
-        f= open('log.config','r')
-        conf = yaml.load(f)
-        f.close()
-        logging.config.dictConfig(conf)
+        #f= open('./config/log.config','r')
+        #conf = yaml.load(f)
+        #f.close()
+        #logging.config.dictConfig(conf)
 
     def test_categorysetterexe(self):
         #set relatedurls(list)
