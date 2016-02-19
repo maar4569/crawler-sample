@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import unittest
-from crawler.apps.config import CrawlerConfig
 from crawler.config.crawlersetting import configureCrawler
 class TestCrawlerConfig(unittest.TestCase):
     def setUp(self):
@@ -8,14 +7,7 @@ class TestCrawlerConfig(unittest.TestCase):
         self._GLOBAL_SETTINGS = configureCrawler()
 
     #success
-    #def test_success(self):
-        #dictConf = self._config.load()
-        #print dictConf
-        #print dictConf["settings"]["outputjson"]
-        #print dictConf["settings"]["exepath"]
-        #self.assertTrue(dictConf)
-
-    def test_success_2(self):
+    def test_success(self):
         print 'GLOBAL_SETTINGS'
         print self._GLOBAL_SETTINGS['directory']['transaction']
         self.assertTrue(self._GLOBAL_SETTINGS)
