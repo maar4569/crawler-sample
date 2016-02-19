@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-import log
+#import log
+from crawler.utils import log
 class Scoreler(object):
     def __init__(self):
         self._relatedsite = {}

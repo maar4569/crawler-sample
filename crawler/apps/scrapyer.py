@@ -5,7 +5,8 @@ import re
 import requests
 import outputwriter
 from bs4 import BeautifulSoup
-import log
+#import log
+from crawler.utils import log
 import types
 import sys
 class UrlScrapyer:

@@ -18,7 +18,7 @@ if __name__ == "__main__":
         scraper        = GoogSearchScrapyer()
         categorysetter = CategorySetterExe()
         scoreler       = StdScoreler()
-        configger      = CrawlerConfig("/crawler_config.yml")
+        configger      = CrawlerConfig("/config/crawler.config")
         config         = configger.load()
         exepath        = config["settings"]["exepath"]
         tmpdir         = config["settings"]["transactiondir"]

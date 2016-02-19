@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import re
 import callprocess
-import log
+#import log
+from crawler.utils import log
 import sys
 class CategorySetter(object):
     #def __init__(self):
